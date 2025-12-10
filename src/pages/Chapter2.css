@@ -1,0 +1,182 @@
+.ch2-root {
+  position: relative;
+  width: 100%;
+  height: 100vh;
+  overflow: hidden;
+  background: black;
+  font-family: inherit;
+}
+
+.ch2-bg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.ch2-dim {
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.55);
+  pointer-events: none;
+  z-index: 5;
+}
+
+.ch2-black {
+  position: absolute;
+  inset: 0;
+  background: black;
+  z-index: 10;
+  animation: fadeIn2 0.4s forwards;
+}
+
+@keyframes fadeIn2 {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+.ch2-layer {
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+
+/* Video */
+.ch2-video-frame {
+  width: 80vw;
+  max-width: 1100px;
+  aspect-ratio: 16/9;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  border-radius: 12px;
+  overflow: hidden;
+  border: 1px solid rgba(255,255,255,0.12);
+  box-shadow: 0 16px 40px rgba(0,0,0,0.6);
+  z-index: 1;
+}
+
+.ch2-video {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* Back button */
+.ch2-back-btn {
+  position: absolute;
+  top: 24px;
+  left: 24px;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  z-index: 20;
+}
+
+.ch2-back-icon {
+  width: 70px;
+  height: auto;
+  transition: transform 0.15s;
+}
+
+.ch2-back-btn:hover .ch2-back-icon {
+  transform: scale(1.1);
+}
+
+/* Hint button */
+.ch2-hint-container {
+  position: absolute;
+  bottom: 28px;
+  left: 28px;
+  z-index: 20;
+}
+
+.ch2-hint-container.disabled {
+  opacity: 0.4;
+  pointer-events: none;
+}
+
+.ch2-hint-btn {
+  background: transparent;
+  border: none;
+  cursor: pointer;
+}
+
+.ch2-hint-icon {
+  width: 60px;
+  height: auto;
+  transition: transform 0.15s ease-out;
+}
+
+.ch2-hint-btn:hover .ch2-hint-icon {
+  transform: scale(1.25);
+}
+
+/* Intro / hint card */
+.ch2-intro-overlay {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  background: rgba(0, 0, 0, 0);
+  pointer-events: none;
+  z-index: 30;
+
+  transition: background 0.25s ease-out;
+}
+
+.ch2-intro-overlay.show {
+  background: rgba(0, 0, 0, 0.45);
+  pointer-events: auto;
+}
+
+.ch2-intro-card {
+  position: relative;
+  width: 360px;
+  max-width: 90vw;
+
+  background: rgba(0, 0, 0, 0.85);
+  border-radius: 14px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  padding: 18px 20px 20px;
+  box-shadow: 0 18px 40px rgba(0, 0, 0, 0.7);
+
+  transform: translateY(40px);
+  opacity: 0;
+  transition: transform 0.25s ease-out, opacity 0.25s ease-out;
+}
+
+.ch2-intro-overlay.show .ch2-intro-card {
+  transform: translateY(0);
+  opacity: 1;
+}
+
+.ch2-intro-close {
+  position: absolute;
+  top: 8px;
+  right: 10px;
+  border: none;
+  background: transparent;
+  color: white;
+  font-size: 18px;
+  cursor: pointer;
+}
+
+.ch2-intro-content {
+  margin-top: 10px;
+  color: white;
+  font-size: 14px;
+  line-height: 1.4;
+}
+
+.ch2-intro-content h2 {
+  margin: 0 0 6px;
+  font-size: 18px;
+  font-weight: 700;
+}
+
+/* Quiz reuses the global .quiz-* styles from Chapter1.css */

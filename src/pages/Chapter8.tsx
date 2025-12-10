@@ -1,0 +1,159 @@
+// src/pages/Chapter8.tsx
+import React, { useEffect, useRef, useState } from "react";
+import { calcStars, saveChapterResult } from "../utils/saveSystem";
+
+import bgImg from "../assets/UI/BG.png";
+import hintImg from "../assets/UI/hint.png";
+import backImg from "../assets/UI/back.png";
+
+import clickSfx from "../assets/Sound/click.mp3";
+import correctSfx from "../assets/Sound/correct.mp3";
+import wrongSfx from "../assets/Sound/wrong.mp3";
+
+import startImg from "../assets/Chapter8/start.png";
+import vdo8 from "../assets/Chapter8/8.mov";
+
+import Quiz from "../components/Quiz";
+import "./Chapter8.css";
+
+type Props = {
+  onBack?: () => void;
+  onNext?: () => void;
+};
+
+export default function Chapter8({ onBack, onNext }: Props) {
+  const videoRef = useRef<HTMLVideoElement | null>(null);
+
+  const [wrongCount, setWrongCount] = useState(0);
+  const [showStart, setShowStart] = useState(true);
+  const [showQuiz, setShowQuiz] = useState(false);
+
+  const [dim, setDim] = useState(false);
+  const [transitionBlack, setTransitionBlack] = useState(false);
+
+  const playClick = () => new Audio(clickSfx).play();
+  const playCorrect = () => new Audio(correctSfx).play();
+  const playWrong = () => new Audio(wrongSfx).play();
+
+  const quizData = {
+    question: "ข้อใดไม่ถูกต้องเกี่ยวกับ PI stage 2",
+    choices: [
+      "ควรรายงานแพทย์เมื่อพบว่าแผลมีเนื้อตายเพื่อทำการตัดเนื้อตายออก",
+      "ทำความสะอาดแผลด้วย NSS จากนั้นแปะด้วยแผ่นตาข่ายลงบนแผล ปิดแผลด้วย Gauze",
+      "พลิกตะแคงตัวทุก 2 ชั่วโมงจัดที่นอนให้เรียบตึง หลีกเลี่ยงการลากตัวผู้ป่วย",
+      "ห้ามใช้หมอนโดนัทรองบริเวณก้น",
+    ],
+    correctIndex: 0,
+  };
+
+  // After 1s: show quiz + dim, BUT keep start image visible behind it
+  useEffect(() => {
+    const t = setTimeout(() => {
+      setDim(true);
+      setShowQuiz(true);
+    }, 1000);
+
+    return () => clearTimeout(t);
+  }, []);
+
+  // When quiz is correct → fade → hide picture → play video
+  const handleCorrect = () => {
+    playCorrect();
+
+    const stars = calcStars(wrongCount);
+    saveChapterResult(8, stars);
+
+    setShowQuiz(false);
+    setTransitionBlack(true);
+
+    // hide start frame, reveal video
+    setShowStart(false);
+
+    setTimeout(() => {
+      if (videoRef.current) {
+        const vid = videoRef.current;
+        vid.muted = true;
+        vid.playsInline = true;
+        vid.src = vdo8;
+        vid.load();
+        vid.play();
+
+        const waitDur = setInterval(() => {
+          if (!vid.duration || isNaN(vid.duration)) return;
+          clearInterval(waitDur);
+
+          setTimeout(() => {
+            if (onNext) onNext();
+          }, vid.duration * 1000);
+        }, 200);
+      }
+    }, 400);
+
+    setTimeout(() => {
+      setTransitionBlack(false);
+      setDim(false);
+    }, 900);
+  };
+
+  const handleWrong = () => {
+    playWrong();
+    setWrongCount((prev) => prev + 1);
+  };
+
+  return (
+    <div className="ch8-root">
+      <img src={bgImg} className="ch8-bg" />
+
+      {dim && <div className="ch8-dim" />}
+      {transitionBlack && <div className="ch8-black" />}
+
+      <div className="ch8-layer">
+        {/* Start Image (now visible while quiz is open) */}
+        {showStart && (
+          <div className="ch8-video-frame">
+            <img src={startImg} className="ch8-start-img" />
+          </div>
+        )}
+
+        {/* Video */}
+        {!showStart && (
+          <div className="ch8-video-frame">
+            <video
+              ref={videoRef}
+              className="ch8-video"
+              muted
+              playsInline
+            />
+          </div>
+        )}
+
+        {/* Back Button */}
+        {onBack && (
+          <button className="ch8-back-btn" onClick={onBack}>
+            <img src={backImg} className="ch8-back-icon" />
+          </button>
+        )}
+
+        {/* Hint Button */}
+        <button
+          className={`ch8-hint-btn ${showQuiz ? "disabled" : ""}`}
+          disabled={showQuiz}
+          onClick={() => alert("Hint for Chapter 8")}
+        >
+          <img src={hintImg} className="ch8-hint-icon" />
+        </button>
+      </div>
+
+      {/* Quiz */}
+      {showQuiz && (
+        <Quiz
+          question={quizData.question}
+          choices={quizData.choices}
+          correctIndex={quizData.correctIndex}
+          onCorrect={handleCorrect}
+          onWrong={handleWrong}
+        />
+      )}
+    </div>
+  );
+}

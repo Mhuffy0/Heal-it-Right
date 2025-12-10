@@ -1,0 +1,56 @@
+.gl-root {
+  position: relative;
+  width: 100%;
+  height: 100vh;
+  overflow: hidden;
+  background: black;
+}
+
+/* shared background */
+.gl-bg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  z-index: 0;
+}
+
+/* main content layer (chapters, menu, etc.) */
+.gl-layer {
+  position: relative;
+  z-index: 1; /* UNDER the decorative assets now */
+  width: 100%;
+  height: 100%;
+}
+
+/* decorative assets */
+.gl-asset {
+  position: absolute;
+  z-index: 5;           /* ABOVE all chapter content */
+  pointer-events: none; /* don't block buttons / quiz clicks */
+  transition: transform 0.15s ease-out;
+}
+
+/* same positions as your main menu assets */
+.gl-asset1 {
+  top: 45%;
+  left: 80%;
+}
+
+.gl-asset2 {
+  top: -15%;
+  right: 0%;
+  width: 300px;
+}
+
+.gl-asset3 {
+  top: 0%;
+  left: 0%;
+}
+
+/* hover isn't useful anymore because pointer-events is none,
+   so you can delete this or leave it, it won't fire */
+.gl-asset:hover {
+  transform: scale(1.03);
+}

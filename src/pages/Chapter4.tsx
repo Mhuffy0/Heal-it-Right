@@ -1,0 +1,185 @@
+// src/pages/Chapter4.tsx
+import React, { useEffect, useRef, useState } from "react";
+import { calcStars, saveChapterResult } from "../utils/saveSystem";
+
+import bgImg from "../assets/UI/BG.png";
+import hintImg from "../assets/UI/hint.png";
+import backImg from "../assets/UI/back.png";
+
+import clickSfx from "../assets/Sound/click.mp3";
+import correctSfx from "../assets/Sound/correct.mp3";
+import wrongSfx from "../assets/Sound/wrong.mp3";
+
+import startImg from "../assets/Chapter4/start.png"; // freeze frame
+import vdo2 from "../assets/Chapter4/2.mov";          // main video
+
+import Quiz from "../components/Quiz";
+import "./Chapter4.css";
+
+type Props = {
+  onBack?: () => void;
+  onNext?: () => void; // -> next chapter
+};
+
+export default function Chapter4({ onBack, onNext }: Props) {
+  const videoRef = useRef<HTMLVideoElement | null>(null);
+
+  const [wrongCount, setWrongCount] = useState(0);
+  const [currentVideo, setCurrentVideo] = useState<1 | 2>(1); // 1=image, 2=video
+  const [dim, setDim] = useState(false);
+  const [transitionBlack, setTransitionBlack] = useState(false);
+
+  const [showQuiz, setShowQuiz] = useState(false);
+  const hintBlocked = showQuiz;
+
+  const [introOpen, setIntroOpen] = useState(false); // hint card, click-only
+
+  const playClick = () => new Audio(clickSfx).play();
+  const playCorrect = () => new Audio(correctSfx).play();
+  const playWrong = () => new Audio(wrongSfx).play();
+
+  // TODO: put real question / answers for chapter 4 here
+  const quizData = {
+    question: "ควรทำอะไรเป็นอันดับถัดไป",
+    choices: ["ประเมินแผล", "ล้างมือ 6 ขั้นตอนด้วยน้ำสบู่", "แนะนำตัว", "จัดสิ่งแวดล้อม"],
+    correctIndex: 0,
+  };
+
+  // Auto spawn quiz 1s after enter (over the freeze image)
+  useEffect(() => {
+    const t = setTimeout(() => {
+      playClick();
+      setDim(true);
+      setShowQuiz(true);
+      // nothing to pause yet, we’re on image
+    }, 1000);
+
+    return () => clearTimeout(t);
+  }, []);
+
+  const handleCorrect = () => {
+    playCorrect();
+
+    const stars = calcStars(wrongCount);
+    saveChapterResult(4, stars);
+
+    setShowQuiz(false);
+    setTransitionBlack(true);
+
+    // fade to black, then swap to video
+    setTimeout(() => {
+      setCurrentVideo(2);
+
+      // wait a tick so <video> mounts and ref attaches
+      setTimeout(() => {
+        const vid = videoRef.current;
+        if (!vid) return;
+
+        vid.currentTime = 0;
+        vid.loop = false;
+        vid.play();
+
+        // wait until duration known, then go next chapter
+        const waitDur = setInterval(() => {
+          if (!vid.duration || isNaN(vid.duration)) return;
+          clearInterval(waitDur);
+
+          setTimeout(() => {
+            if (onNext) onNext();
+          }, vid.duration * 1000);
+        }, 200);
+      }, 50);
+    }, 400);
+
+    // finish fade + clear dim
+    setTimeout(() => {
+      setTransitionBlack(false);
+      setDim(false);
+    }, 900);
+  };
+
+  const handleWrong = () => {
+    playWrong();
+    setWrongCount((prev) => prev + 1);
+  };
+
+  return (
+    <div className="ch4-root">
+      <img src={bgImg} className="ch4-bg" />
+
+      {dim && <div className="ch4-dim" />}
+      {transitionBlack && <div className="ch4-black" />}
+
+      <div className="ch4-layer">
+        {/* FREEZE IMAGE / VIDEO AREA */}
+        <div className="ch4-video-frame">
+          {currentVideo === 1 ? (
+            <img src={startImg} className="ch4-video" />
+          ) : (
+            <video
+              ref={videoRef}
+              className="ch4-video"
+              src={vdo2}
+              autoPlay
+              loop={false}
+              muted
+              playsInline
+            />
+          )}
+        </div>
+
+        {/* BACK BUTTON */}
+        {onBack && (
+          <button className="ch4-back-btn" onClick={onBack}>
+            <img src={backImg} className="ch4-back-icon" />
+          </button>
+        )}
+
+        {/* HINT BUTTON (bottom-left, disabled during quiz) */}
+        <div className={`ch4-hint-container ${hintBlocked ? "disabled" : ""}`}>
+          <button
+            className="ch4-hint-btn"
+            onClick={() => !hintBlocked && setIntroOpen(true)}
+            disabled={hintBlocked}
+          >
+            <img src={hintImg} className="ch4-hint-icon" />
+          </button>
+        </div>
+      </div>
+
+      {/* HINT CARD (click to open) */}
+      <div className={`ch4-intro-overlay ${introOpen ? "show" : ""}`}>
+        <div className="ch4-intro-card">
+          <button
+            className="ch4-intro-close"
+            onClick={() => setIntroOpen(false)}
+          >
+            X
+          </button>
+
+          <div className="ch4-intro-content">
+            <h2>ผู้ป่วยหญิงไทย อายุ 72 ปี</h2>
+            <p>
+              นอนโรงพยาบาลจากข้อเข่าเสื่อมรุนแรง เคลื่อนไหวลำบาก
+              ต้องพึ่งพาผู้อื่นในการช่วยพลิกตัว หลีกเลี่ยงการขยับตัวเพราะปวดข้อ
+              ร่วมกับความดันโลหิตสูงควบคุมไม่ดี ผลประเมิน Braden score เท่ากับ 15
+              คะแนน พบบริเวณก้นกบมีผิวหนังแดงไม่จางเมื่อกด ผิวอุ่นกว่าบริเวณอื่น
+              ขนาดพื้นที่แดงประมาณ 3×3 ซม. ผู้ป่วยบอกว่าปวดหนึบๆ เมื่อสัมผัส
+            </p>
+          </div>
+        </div>
+      </div>
+
+      {/* QUIZ POPUP */}
+      {showQuiz && (
+        <Quiz
+          question={quizData.question}
+          choices={quizData.choices}
+          correctIndex={quizData.correctIndex}
+          onCorrect={handleCorrect}
+          onWrong={handleWrong}
+        />
+      )}
+    </div>
+  );
+}

@@ -1,0 +1,229 @@
+.cs-root {
+  position: relative;
+  width: 100%;
+  height: 100vh;
+  overflow: hidden;
+  color: #fff;
+  font-family: "Inter", sans-serif;
+}
+
+.cs-bg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.cs-overlay {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle, rgba(0, 0, 0, 0.4), #000);
+}
+
+.cs-layer {
+  position: relative;
+  z-index: 1;
+  height: 100%;
+  padding: 40px 64px 48px;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Header */
+
+.cs-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 32px;
+}
+
+.cs-back-btn {
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
+.cs-back-icon {
+  width: 32px;
+  height: 32px;
+}
+
+.cs-title-block {
+  text-align: center;
+}
+
+.cs-title {
+  font-size: 28px;
+  letter-spacing: 0.2em;
+}
+
+.cs-title-player {
+  margin-top: 4px;
+  font-size: 14px;
+  letter-spacing: 0.1em;
+  color: #ccc;
+}
+
+.cs-title-player span {
+  color: #fff;
+}
+
+.cs-player-box {
+  text-align: right;
+  font-size: 14px;
+}
+
+.cs-player-stars {
+  margin-bottom: 4px;
+}
+
+.cs-player-select {
+  background: #000;
+  color: #fff;
+  border: 1px solid #555;
+  padding: 4px 8px;
+}
+
+/* Panel + slide up */
+
+.cs-panel {
+  margin: 0 auto;
+  max-width: 100%;          /* use full width */
+  padding: 24px 48px;
+  background: rgba(0, 0, 0, 0.7);
+  border-radius: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+
+  display: flex;
+  gap: 16px;
+  justify-content: flex-start;
+
+  /* key part: one row, scroll horizontally if overflow */
+  overflow-x: auto;
+  overflow-y: hidden;
+  white-space: nowrap;
+
+  transform: translateY(40px);
+  opacity: 0;
+  transition: transform 0.4s ease-out, opacity 0.4s ease-out;
+}
+
+/* optional: nicer scrollbar (can skip if you want default) */
+.cs-panel::-webkit-scrollbar {
+  height: 6px;
+}
+.cs-panel::-webkit-scrollbar-track {
+  background: rgba(0, 0, 0, 0.4);
+}
+.cs-panel::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.35);
+  border-radius: 3px;
+}
+
+
+
+.cs-panel--visible {
+  transform: translateY(0);
+  opacity: 1;
+}
+
+/* Cards */
+
+.cs-card {
+  width: 160px;
+  height: 360px;
+  background: transparent;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+
+  /* keep each card fixed-width in the row */
+  flex: 0 0 auto;
+}
+
+
+.cs-card--locked {
+  cursor: default;
+}
+
+.cs-card-inner {
+  width: 100%;
+  height: 100%;
+  border-radius: 10px;
+  border: 2px solid rgba(255, 255, 255, 0.2);
+  overflow: hidden;
+  background: linear-gradient(to bottom, #111, #000);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+
+  transform: scale(1);
+  transition:
+    transform 0.18s ease-out,
+    box-shadow 0.18s ease-out,
+    border-color 0.18s ease-out,
+    translate 0.18s ease-out;
+}
+
+/* hover boost only for unlocked cards */
+.cs-card--unlocked:hover .cs-card-inner {
+  transform: scale(1.06) translateY(-4px);
+  box-shadow: 0 18px 40px rgba(0, 0, 0, 0.7);
+  border-color: rgba(255, 255, 255, 0.6);
+}
+
+/* Thumbnail area – set background images per chapter if you want */
+.cs-thumb {
+  flex: 1;
+  background: #111;
+  background-position: center;
+  background-size: cover;
+}
+
+/* Example:
+.cs-thumb-1 { background-image: url("../assets/ChapterSelect/ch1.png"); }
+.cs-thumb-2 { background-image: url("../assets/ChapterSelect/ch2.png"); }
+... */
+
+/* Card footer */
+
+.cs-card-footer {
+  padding: 12px;
+  text-align: center;
+}
+
+.cs-coming-soon,
+.cs-locked-label,
+.cs-unlocked-label {
+  font-size: 12px;
+  letter-spacing: 0.18em;
+}
+
+.cs-coming-soon {
+  color: #f1c45f;
+}
+
+.cs-locked-label {
+  color: #bbb;
+}
+
+.cs-unlocked-label {
+  color: #fff;
+}
+
+/* Stars */
+
+.cs-stars,
+.cs-card-stars {
+  margin-top: 8px;
+  display: flex;
+  justify-content: center;
+  gap: 4px;
+}
+
+.cs-star-icon {
+  width: 18px;
+  height: 18px;
+}

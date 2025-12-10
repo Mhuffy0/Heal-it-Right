@@ -1,0 +1,230 @@
+/* Root fills screen */
+.mm-root {
+  position: relative;
+  width: 100%;
+  height: 100vh;
+  overflow: hidden;
+  background: black;
+}
+
+/* Background */
+.mm-bg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* Dim layer for play hover + popup */
+.mm-dim {
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0);
+  pointer-events: none;
+  transition: background 0.15s ease-out;
+}
+
+.mm-dim--active {
+  background: rgba(0, 0, 0, 0.35);
+}
+
+/* Main layer */
+.mm-layer {
+  position: relative;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Logo */
+.mm-logo {
+  max-width: 1500px;
+  width: 40vw;
+  height: auto;
+  margin-bottom: 1.5rem;
+  transition: transform 0.15s ease-out;
+}
+
+/* Play button */
+.mm-play-btn {
+  border: none;
+  padding: 0;
+  background: transparent;
+  cursor: pointer;
+  transition: transform 0.15s ease-out;
+}
+
+.mm-play-icon {
+  width: 200px;
+  height: 200px;
+}
+
+/* Center panel (wraps the play button) */
+.mm-center-panel {
+  margin-top: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+}
+
+/* Assets */
+.mm-asset {
+  position: absolute;
+  transition: transform 0.15s ease-out;
+}
+
+/* Extra tiny hover scale for assets */
+.mm-asset:hover {
+  transform: scale(1.03);
+}
+
+/* ====== POSITION CONTROLS ====== */
+.mm-asset1 {
+  top: 45%;
+  left: 80%;
+}
+
+.mm-asset2 {
+  top: -15%;
+  right: 0%;
+  width: 300px;
+}
+
+.mm-asset3 {
+  top: 0%;
+  left: 0%;
+}
+
+/* Hint button bottom-left */
+
+.mm-hint-container {
+  position: absolute;
+  bottom: 30px;
+  left: 30px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.mm-hint-btn {
+  border: none;
+  padding: 0;
+  background: transparent;
+  cursor: pointer;
+}
+
+.mm-hint-icon {
+  width: 55px;
+  height: auto;
+}
+
+.mm-hint-text {
+  width: 160px;
+  opacity: 0;
+  transform: translateX(-10px);
+  transition: opacity 0.15s ease-out, transform 0.15s ease-out;
+}
+
+.mm-hint-text--show {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+/* Hint popup card (slide up) */
+.mm-hint-card {
+  position: absolute;
+  bottom: -500px; /* hidden state */
+  left: 20px;
+  width: 320px;
+  height: 300px;
+  background: rgba(0, 0, 0, 0.8);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 10px;
+  padding: 15px;
+  transition: bottom 0.25s ease-out;
+}
+
+.mm-hint-card--open {
+  bottom: 100px; /* slides up into view */
+}
+
+.mm-hint-close {
+  position: absolute;
+  top: 6px;
+  right: 10px;
+  border: none;
+  background: transparent;
+  color: white;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+.mm-hint-content {
+  margin-top: 20px;
+  color: white;
+  font-size: 14px;
+  font-family: "Handy", Handy;
+  user-select: none;
+}
+
+/* ============================== */
+/* === PLAYER NAME POPUP ON MENU === */
+
+.mm-name-popup {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  opacity: 0;
+  pointer-events: none;
+  z-index: 50; /* above everything in menu */
+  transition: opacity 0.25s ease-out;
+}
+
+.mm-name-popup--show {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.mm-name-card {
+  background: #111;
+  padding: 24px 32px;
+  border-radius: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  min-width: 320px;
+  text-align: center;
+  box-shadow: 0 18px 40px rgba(0, 0, 0, 0.8);
+}
+
+.mm-name-input {
+  width: 100%;
+  margin-top: 12px;
+  padding: 8px 10px;
+  background: #000;
+  border: 1px solid #555;
+  color: #fff;
+  font-size: 14px;
+}
+
+.mm-name-confirm {
+  margin-top: 16px;
+  padding: 8px 20px;
+  border: none;
+  background: #ffffff;
+  color: #000;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+.mm-name-confirm:disabled {
+  opacity: 0.4;
+  cursor: default;
+}
