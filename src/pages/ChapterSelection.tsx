@@ -1,7 +1,7 @@
 // src/pages/ChapterSelection.tsx
 import { useEffect, useMemo, useState } from "react";
 
-import bgImg from "../assets/UI/bg.png";
+import bgImg from "../assets/UI/BG.png";
 import backImg from "../assets/UI/back.png";
 import starImg from "../assets/UI/star.png";
 import blankStarImg from "../assets/UI/blank_star.png";
