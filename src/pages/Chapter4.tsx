@@ -1,5 +1,5 @@
 // src/pages/Chapter4.tsx
-import React, { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { calcStars, saveChapterResult } from "../utils/saveSystem";
 
 import bgImg from "../assets/UI/BG.png";

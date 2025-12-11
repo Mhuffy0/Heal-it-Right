@@ -1,5 +1,5 @@
 // src/pages/ChapterSelection.tsx
-import React, { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 
 import bgImg from "../assets/UI/bg.png";
 import backImg from "../assets/UI/back.png";
@@ -45,15 +45,6 @@ export default function ChapterSelection({ patient, onBack, onStartChapter }: Pr
   const allPlayers = useMemo(() => getPlayers(), [activePlayer]);
   const chapterIds = PATIENT_CHAPTERS[patient];
 
-  const totalStars = useMemo(() => {
-    if (!activePlayer) return 0;
-    let t = 0;
-    for (const id of chapterIds) {
-      // NOTE: currently stars not separated by patient.
-      t += getChapterStars(id);
-    }
-    return t;
-  }, [activePlayer, chapterIds]);
 
   const handleSelectExistingPlayer = (id: string) => {
     setActivePlayer(id);
@@ -113,10 +104,6 @@ export default function ChapterSelection({ patient, onBack, onStartChapter }: Pr
           </div>
 
           <div className="cs-player-box">
-            {activePlayer && (
-              <div className="cs-player-stars">Total Stars: {totalStars}</div>
-            )}
-
             {allPlayers.length > 1 && activePlayer && (
               <select
                 className="cs-player-select"
