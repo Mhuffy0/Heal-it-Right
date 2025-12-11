@@ -1,4 +1,5 @@
 // src/utils/saveSystem.ts
+
 export type ChapterScore = {
   stars: number; // 0–3
 };
@@ -6,8 +7,8 @@ export type ChapterScore = {
 export type PlayerProfile = {
   id: string;
   name: string;
-  unlockedChapters: number[]; // e.g. [1, 2, 3]
-  chapters: { [chapterId: number]: ChapterScore };
+  unlockedChapters: number[]; // stored as internal ids (see below)
+  chapters: { [chapterId: number]: ChapterScore }; // internal ids
 };
 
 export type SaveData = {
@@ -16,6 +17,24 @@ export type SaveData = {
 };
 
 const STORAGE_KEY = "healItRightSave_v1";
+
+// local helper: which patient this progress is for
+type Patient = "female" | "male";
+
+/**
+ * Map a visible chapter id (1..8) + patient
+ * → internal id stored in save (so female/male don't clash).
+ *
+ * female 1 → 1
+ * female 2 → 2
+ * ...
+ * male   1 → 101
+ * male   2 → 102
+ * ...
+ */
+function getInternalChapterId(chapterId: number, patient: Patient = "female") {
+  return patient === "female" ? chapterId : 100 + chapterId;
+}
 
 function getDefaultSave(): SaveData {
   return {
@@ -46,7 +65,11 @@ export function createPlayer(name: string): PlayerProfile {
   const profile: PlayerProfile = {
     id: crypto.randomUUID(),
     name: name.trim() || "Player",
-    unlockedChapters: [1],
+    // unlock chapter 1 for BOTH patients by default
+    unlockedChapters: [
+      getInternalChapterId(1, "female"),
+      getInternalChapterId(1, "male"),
+    ],
     chapters: {},
   };
 
@@ -82,33 +105,65 @@ export function calcStars(wrongCount: number): number {
   return 0;
 }
 
-export function saveChapterResult(chapterId: number, stars: number) {
+/**
+ * Save chapter result for specific patient.
+ * Default patient = "female" so all your old code still works.
+ */
+export function saveChapterResult(
+  chapterId: number,
+  stars: number,
+  patient: Patient = "female"
+) {
   const data = loadSave();
   if (!data.activePlayerId) return;
   const player = data.players.find((p) => p.id === data.activePlayerId);
   if (!player) return;
 
-  const prev = player.chapters[chapterId]?.stars ?? 0;
+  const internalId = getInternalChapterId(chapterId, patient);
+
+  const prev = player.chapters[internalId]?.stars ?? 0;
   const best = Math.max(prev, stars);
 
-  player.chapters[chapterId] = { stars: best };
+  player.chapters[internalId] = { stars: best };
 
-  const nextChapter = chapterId + 1;
-  if (!player.unlockedChapters.includes(nextChapter)) {
-    player.unlockedChapters.push(nextChapter);
+  const nextInternalId = getInternalChapterId(chapterId + 1, patient);
+  if (!player.unlockedChapters.includes(nextInternalId)) {
+    player.unlockedChapters.push(nextInternalId);
   }
 
   save(data);
 }
 
-export function getChapterStars(chapterId: number): number {
+/**
+ * Read stars for chapter + patient.
+ * Default = female to keep old code working.
+ */
+export function getChapterStars(
+  chapterId: number,
+  patient: Patient = "female"
+): number {
   const player = getActivePlayer();
   if (!player) return 0;
-  return player.chapters[chapterId]?.stars ?? 0;
+
+  const internalId = getInternalChapterId(chapterId, patient);
+  return player.chapters[internalId]?.stars ?? 0;
 }
 
-export function isChapterUnlocked(chapterId: number): boolean {
+/**
+ * Is chapter unlocked for this patient?
+ * Default = female to keep old code working.
+ */
+export function isChapterUnlocked(
+  chapterId: number,
+  patient: Patient = "female"
+): boolean {
   const player = getActivePlayer();
-  if (!player) return chapterId === 1; // default: ch1 unlocked
-  return player.unlockedChapters.includes(chapterId);
+  const internalId = getInternalChapterId(chapterId, patient);
+
+  if (!player) {
+    // default: first chapter unlocked for any patient
+    return chapterId === 1;
+  }
+
+  return player.unlockedChapters.includes(internalId);
 }

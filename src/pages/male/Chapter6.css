@@ -1,0 +1,122 @@
+.ch6-root {
+  position: relative;
+  width: 100%;
+  height: 100vh;
+  overflow: hidden;
+  background: black;
+}
+
+.ch6-bg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.ch6-layer {
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+
+/* Video frame */
+.ch6-video-frame {
+  width: 80vw;
+  max-width: 1100px;
+  aspect-ratio: 16/9;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  border-radius: 12px;
+  overflow: hidden;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.6);
+  z-index: 1;
+}
+
+.ch6-video {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+/* Back button */
+.ch6-back-btn {
+  position: absolute;
+  top: 24px;
+  left: 24px;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  z-index: 20;
+}
+
+.ch6-back-icon {
+  width: 70px;
+  transition: 0.15s;
+}
+
+.ch6-back-btn:hover .ch6-back-icon {
+  transform: scale(1.1);
+}
+
+/* Wound small button */
+.ch6-wound-btn {
+  position: absolute;
+  bottom: 28px;
+  left: 28px;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  z-index: 25;
+}
+
+.ch6-wound-thumb {
+  width: 85px;
+  height: auto;
+  border-radius: 8px;
+  border: 2px solid rgba(255,255,255,0.3);
+  transition: transform .15s;
+}
+
+.ch6-wound-btn:hover .ch6-wound-thumb {
+  transform: scale(1.1);
+}
+
+/* Wound popup */
+.ch6-wound-overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(0,0,0,0.55);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 40;
+}
+
+.ch6-wound-card {
+  position: relative;
+  background: rgba(0,0,0,0.85);
+  border-radius: 12px;
+  padding: 20px;
+  border: 1px solid rgba(255,255,255,0.25);
+  box-shadow: 0 16px 40px rgba(0,0,0,0.6);
+}
+
+.ch6-wound-big {
+  width: 380px;
+  height: auto;
+  border-radius: 10px;
+}
+
+.ch6-wound-close {
+  position: absolute;
+  top: 6px;
+  right: 10px;
+  background: transparent;
+  border: none;
+  font-size: 18px;
+  color: white;
+  cursor: pointer;
+}

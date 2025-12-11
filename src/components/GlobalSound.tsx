@@ -1,10 +1,10 @@
 // src/components/GlobalSounds.tsx
 import React, { useEffect, useRef } from "react";
 
-import bgm from "../assets/Sound/bgm.mp3"; // <-- change filename if needed
+import bgm from "../assets/Sound/bgm.mp3"; // background music file
 
 type GlobalSoundsProps = {
-  volume?: number; // 0..1, default 0.6
+  volume?: number; // 0..1 (default 0.6)
 };
 
 export default function GlobalSounds({ volume = 0.6 }: GlobalSoundsProps) {
@@ -20,13 +20,13 @@ export default function GlobalSounds({ volume = 0.6 }: GlobalSoundsProps) {
       if (!audioRef.current) return;
       audioRef.current
         .play()
-        .catch(() =>
-          console.warn("GlobalSounds: autoplay still blocked after interaction"),
-        );
+        .catch(() => {
+          console.warn("GlobalSounds: autoplay blocked even after interaction");
+        });
       window.removeEventListener("pointerdown", handleUserInteract);
     };
 
-    // start playing on first click / tap / mouse down
+    // Start when user interacts with the page
     window.addEventListener("pointerdown", handleUserInteract);
 
     return () => {
@@ -36,5 +36,16 @@ export default function GlobalSounds({ volume = 0.6 }: GlobalSoundsProps) {
     };
   }, [volume]);
 
-  return null; // nothing visual
+  // === NEW: mute/unmute background music ===
+  useEffect(() => {
+    const onMuteEvent = (e: any) => {
+      if (!audioRef.current) return;
+      audioRef.current.muted = e.detail === true;
+    };
+
+    window.addEventListener("BG_MUTE", onMuteEvent);
+    return () => window.removeEventListener("BG_MUTE", onMuteEvent);
+  }, []);
+
+  return null;
 }

@@ -1,3 +1,4 @@
+// src/pages/ChapterSelection.tsx
 import React, { useEffect, useMemo, useState } from "react";
 
 import bgImg from "../assets/UI/bg.png";
@@ -15,16 +16,21 @@ import {
 } from "../utils/saveSystem";
 
 import "./ChapterSelection.css";
+import type { PatientId } from "./PatientSelection";
 
 type Props = {
+  patient: PatientId; // NEW
   onBack?: () => void;
-  onStartChapter?: (id: number) => void;
+  onStartChapter?: (chapterId: number, patient: PatientId) => void;
 };
 
-// now 8 real chapters
-const CHAPTER_IDS = [1, 2, 3, 4, 5, 6, 7, 8];
+// config per patient (if later you want different chapter counts)
+const PATIENT_CHAPTERS: Record<PatientId, number[]> = {
+  female: [1, 2, 3, 4, 5, 6, 7, 8],
+  male: [1, 2, 3, 4, 5, 6, 7, 8], // can change later
+};
 
-export default function ChapterSelection({ onBack, onStartChapter }: Props) {
+export default function ChapterSelection({ patient, onBack, onStartChapter }: Props) {
   const [activePlayer, setActivePlayerState] = useState<PlayerProfile | null>(
     null,
   );
@@ -34,18 +40,20 @@ export default function ChapterSelection({ onBack, onStartChapter }: Props) {
     const p = getActivePlayer();
     setActivePlayerState(p ?? null);
     setTimeout(() => setPanelVisible(true), 50);
-  }, []);
+  }, [patient]);
 
   const allPlayers = useMemo(() => getPlayers(), [activePlayer]);
+  const chapterIds = PATIENT_CHAPTERS[patient];
 
   const totalStars = useMemo(() => {
     if (!activePlayer) return 0;
     let t = 0;
-    for (const id of CHAPTER_IDS) {
+    for (const id of chapterIds) {
+      // NOTE: currently stars not separated by patient.
       t += getChapterStars(id);
     }
     return t;
-  }, [activePlayer]);
+  }, [activePlayer, chapterIds]);
 
   const handleSelectExistingPlayer = (id: string) => {
     setActivePlayer(id);
@@ -56,11 +64,11 @@ export default function ChapterSelection({ onBack, onStartChapter }: Props) {
   const handleChapterClick = (id: number, unlocked: boolean) => {
     if (!unlocked) return;
     if (!onStartChapter) return;
-    onStartChapter(id);
+    onStartChapter(id, patient);
   };
 
   const renderStars = (id: number) => {
-    const stars = getChapterStars(id);
+    const stars = getChapterStars(id); // same note: shared between patients for now
     return (
       <div className="cs-stars">
         {[0, 1, 2].map((i) => (
@@ -73,6 +81,9 @@ export default function ChapterSelection({ onBack, onStartChapter }: Props) {
       </div>
     );
   };
+
+  const patientLabel =
+    patient === "female" ? "ผู้ป่วยหญิงสูงอายุ" : "ผู้ป่วยชายวัยทำงาน";
 
   return (
     <div className="cs-root">
@@ -91,6 +102,9 @@ export default function ChapterSelection({ onBack, onStartChapter }: Props) {
 
           <div className="cs-title-block">
             <h1 className="cs-title">CHAPTER SELECTION</h1>
+            <div className="cs-subtitle">
+              เคส: <span>{patientLabel}</span>
+            </div>
             {activePlayer && (
               <div className="cs-title-player">
                 PLAYER: <span>{activePlayer.name}</span>
@@ -121,8 +135,8 @@ export default function ChapterSelection({ onBack, onStartChapter }: Props) {
 
         {/* Panel */}
         <div className={`cs-panel ${panelVisible ? "cs-panel--visible" : ""}`}>
-          {CHAPTER_IDS.map((id) => {
-            const unlocked = isChapterUnlocked(id);
+          {chapterIds.map((id) => {
+            const unlocked = isChapterUnlocked(id); // same unlock for now
             const isLocked = !unlocked;
 
             return (
@@ -135,8 +149,8 @@ export default function ChapterSelection({ onBack, onStartChapter }: Props) {
                 onClick={() => handleChapterClick(id, unlocked)}
               >
                 <div className="cs-card-inner">
-                  {/* thumbnail area – set bg in CSS per chapter */}
-                  <div className={`cs-thumb cs-thumb-${id}`} />
+                  {/* thumbnail area – you can style per patient+chapter if needed */}
+                  <div className={`cs-thumb cs-thumb-${patient}-${id}`} />
 
                   <div className="cs-card-footer">
                     {isLocked ? (

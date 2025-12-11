@@ -1,7 +1,6 @@
 // src/pages/Chapter6.tsx
 import React, { useEffect, useRef, useState } from "react";
-import { saveChapterResult } from "../utils/saveSystem"; // 👈 ADD THIS
-
+import { saveChapterResult } from "../utils/saveSystem"; 
 import bgImg from "../assets/UI/BG.png";
 import hintImg from "../assets/UI/hint.png";
 import backImg from "../assets/UI/back.png";

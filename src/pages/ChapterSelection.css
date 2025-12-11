@@ -32,22 +32,41 @@
 
 /* Header */
 
+/* Header at top of the big chapter box */
 .cs-header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  margin-bottom: 32px;
+  position: relative;
+  max-width: 1100px;
+  margin: 40px auto 24px;
+  text-align: center;
 }
 
+/* Back button: sits on top-left of the chapter box */
 .cs-back-btn {
-  background: none;
+  position: absolute;
+  left: -72px;           /* tweak if you want it further in/out */
+  top: 50%;
+  transform: translateY(-50%);
+  width: 52px;
+  height: 52px;
+  border-radius: 999px;
   border: none;
+  padding: 0;
+  background: rgba(0, 0, 0, 0.7);
+  display: flex;
+  align-items: center;
+  justify-content: center;
   cursor: pointer;
+  z-index: 10;           /* sits above panel & background art */
+}
+
+.cs-back-btn:hover {
+  background: rgba(0, 0, 0, 0.9);
 }
 
 .cs-back-icon {
   width: 32px;
   height: 32px;
+  object-fit: contain;
 }
 
 .cs-title-block {
@@ -68,15 +87,6 @@
 
 .cs-title-player span {
   color: #fff;
-}
-
-.cs-player-box {
-  text-align: right;
-  font-size: 14px;
-}
-
-.cs-player-stars {
-  margin-bottom: 4px;
 }
 
 .cs-player-select {

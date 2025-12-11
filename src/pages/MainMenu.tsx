@@ -1,4 +1,3 @@
-// src/pages/MainMenu.tsx
 import React, { useEffect, useState } from "react";
 
 import bgImg from "../assets/UI/bg.png";
@@ -20,6 +19,7 @@ import "./MainMenu.css";
 
 type MainMenuProps = {
   onPlay?: () => void; // go to Chapter Selection
+  onShowVideoLibrary?: () => void; // go to Video Library page
 };
 
 type MouseState = {
@@ -27,7 +27,10 @@ type MouseState = {
   y: number; // -0.5 .. 0.5
 };
 
-export default function MainMenu({ onPlay }: MainMenuProps) {
+export default function MainMenu({
+  onPlay,
+  onShowVideoLibrary,
+}: MainMenuProps) {
   const [playHover, setPlayHover] = useState(false);
   const [mouse, setMouse] = useState<MouseState>({ x: 0, y: 0 });
 
@@ -37,7 +40,6 @@ export default function MainMenu({ onPlay }: MainMenuProps) {
   const ASSET2_STRENGTH = 20;
   const ASSET3_STRENGTH = 16;
 
-  const [hintOpen, setHintOpen] = useState(false);
   const [hintHover, setHintHover] = useState(false);
 
   // player stuff (for first-time popup)
@@ -88,6 +90,12 @@ export default function MainMenu({ onPlay }: MainMenuProps) {
 
     // now actually go to chapter selection
     onPlay();
+  };
+
+  const handleHintClick = () => {
+    if (onShowVideoLibrary) {
+      onShowVideoLibrary();
+    }
   };
 
   const dimActive = playHover || showNameBox;
@@ -163,7 +171,7 @@ export default function MainMenu({ onPlay }: MainMenuProps) {
         />
       </div>
 
-      {/* Hint button bottom-left */}
+      {/* Hint button bottom-left -> directly opens video library */}
       <div
         className="mm-hint-container"
         onMouseEnter={() => setHintHover(true)}
@@ -172,7 +180,7 @@ export default function MainMenu({ onPlay }: MainMenuProps) {
         <button
           type="button"
           className="mm-hint-btn"
-          onClick={() => setHintOpen(true)}
+          onClick={handleHintClick}
         >
           <img src={hintImg} alt="Hint" className="mm-hint-icon" />
         </button>
@@ -182,17 +190,6 @@ export default function MainMenu({ onPlay }: MainMenuProps) {
           alt="Hint Info"
           className={`mm-hint-text ${hintHover ? "mm-hint-text--show" : ""}`}
         />
-      </div>
-
-      {/* Hint popup card */}
-      <div className={`mm-hint-card ${hintOpen ? "mm-hint-card--open" : ""}`}>
-        <button className="mm-hint-close" onClick={() => setHintOpen(false)}>
-          X
-        </button>
-
-        <div className="mm-hint-content">
-          <p>ข้อมูลเกมเบื้องต้น / Game Info...</p>
-        </div>
       </div>
 
       {/* === PLAYER NAME POPUP === */}
