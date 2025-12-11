@@ -1,7 +1,7 @@
 // src/components/GameLayout.tsx
 import React, { useState } from "react";
 
-import bgImg from "../assets/UI/bg.png";
+import bgImg from "../assets/UI/BG.png";
 import asset1Img from "../assets/UI/asset1.png";
 import asset2Img from "../assets/UI/asset2.png";
 import asset3Img from "../assets/UI/asset3.png";
