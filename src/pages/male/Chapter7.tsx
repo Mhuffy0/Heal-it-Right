@@ -1,5 +1,5 @@
 // src/pages/Chapter7.tsx
-import React, { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { calcStars, saveChapterResult } from "../../utils/saveSystem";
 
 import bgImg from "../../assets/UI/BG.png";
@@ -38,12 +38,12 @@ export default function Chapter7({ onBack, onNext }: Props) {
   const quizData = {
     question: "จากรูปควรทำแผลอย่างไร",
     choices: [
-      "ทำความสะอาดแผลด้วย NSS จากนั้นทาด้วย 1%silversulfadiazine ปิดแผลด้วย Gauze",
-      "ทำความสะอาดแผลด้วย NSS จากนั้นใช้ Gauze ชุบ Betadine ใส่ลงไปในแผล ปิดแผลด้วย Gauze",
+      "ทำความสะอาดแผลด้วย NSS จากนั้นทาด้วย 1%silversulfadiazine ใช้ Gauze ชุบ NSS ใส่ลงไปในแผล  ปิดแผลด้วย Gauze",
+      "ทำความสะอาดแผลด้วย NSS จากนั้น ปิดแผลด้วยผลิตภัณฑ์ Polyurethane foam",
       "ทำความสะอาดแผลด้วย NSS จากนั้นแปะด้วยแผ่นตาข่ายลงบนแผล ปิดแผลด้วย Gauze",
-      "ทำความสะอาดแผลด้วย Alcohol จากนั้นใช้ Gauze ชุบ NSS ใส่ลงไปในแผล ปิดแผลด้วย Gauze",
+      "ทำความสะอาดแผลด้วย Alcohol  เพื่อช่วยฆ่าเชื้อ จากนั้นใช้ Gauze ชุบ NSS ใส่ลงไปในแผล ปิดแผลด้วย Gauze",
     ],
-    correctIndex: 2,
+    correctIndex: 0,
   };
 
   // After 1s: show quiz + dim, but KEEP the start image visible behind it
@@ -138,7 +138,7 @@ export default function Chapter7({ onBack, onNext }: Props) {
         <button
           className={`ch7-hint-btn ${showQuiz ? "disabled" : ""}`}
           disabled={showQuiz}
-          onClick={() => alert("Add hint card if needed")}
+          onClick={() => alert("รอใส่คำใบ้")}
         >
           <img src={hintImg} className="ch7-hint-icon" />
         </button>

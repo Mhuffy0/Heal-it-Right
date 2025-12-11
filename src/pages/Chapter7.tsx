@@ -1,5 +1,5 @@
 // src/pages/Chapter7.tsx
-import React, { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { calcStars, saveChapterResult } from "../utils/saveSystem";
 
 import bgImg from "../assets/UI/BG.png";
@@ -138,7 +138,7 @@ export default function Chapter7({ onBack, onNext }: Props) {
         <button
           className={`ch7-hint-btn ${showQuiz ? "disabled" : ""}`}
           disabled={showQuiz}
-          onClick={() => alert("Add hint card if needed")}
+          onClick={() => alert("รอใส่คำใบ้")}
         >
           <img src={hintImg} className="ch7-hint-icon" />
         </button>

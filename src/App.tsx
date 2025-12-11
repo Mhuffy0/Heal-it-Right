@@ -3,6 +3,7 @@ import { useState } from "react";
 
 import GameLayout from "./components/GameLayout";
 import GlobalSounds from "./components/GlobalSound";
+import AutoPreloader  from "./components/VdoPreloader";
 
 import MainMenu from "./pages/MainMenu";
 import ChapterSelection from "./pages/ChapterSelection";
@@ -53,6 +54,7 @@ type Screen =
   | "maleChapter6"
   | "maleChapter7"
   | "maleChapter8";
+
 
 export default function App() {
   const [screen, setScreen] = useState<Screen>("menu");
@@ -249,6 +251,7 @@ export default function App() {
   return (
     <GameLayout>
       <GlobalSounds />
+      <AutoPreloader />
       {content}
     </GameLayout>
   );
