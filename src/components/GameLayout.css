@@ -1,9 +1,7 @@
 .gl-root {
   position: relative;
-  width: 15vw;
-  max-width: 100%;
-  height: 15vw;
-  max-height: 100%;
+  width: 100%;
+  height: 100vh;
   overflow: hidden;
   background: black;
 }
@@ -12,52 +10,56 @@
 .gl-bg {
   position: absolute;
   inset: 0;
-  width: 15vw;
-  max-width: 100%;
-  height: 15vw;
-  max-height: 100%;
+  width: 100%;
+  height: 100%;
   object-fit: cover;
   z-index: 0;
 }
 
-/* main content layer (chapters, menu, etc.) */
+/* main content layer */
 .gl-layer {
   position: relative;
   z-index: 1;
-  width: 15vw;
-  max-width: 100%;
-  height: 15vw;
-  max-height: 100%;
+  width: 100%;
+  height: 100%;
 }
 
 /* decorative assets */
 .gl-asset {
   position: absolute;
-  z-index: 5;           /* ABOVE all chapter content */
-  pointer-events: none; /* don't block buttons / quiz clicks */
+  z-index: 5;
+  pointer-events: none;
   transition: transform 0.15s ease-out;
+
+  /* size scales by viewport width */
+  width: 16vw;
+  max-width: 360px;
+  height: auto;
 }
 
-/* same positions as your main menu assets */
+/* ===== RESPONSIVE POSITIONING ===== */
+/* Using vh/vw keeps position consistent across all resolutions */
+
 .gl-asset1 {
-  top: 45%;
-  left: 80%;
+  bottom: 0vh;   
+  right: 0vw;   /* was 80% */
+  width: 14vw;
 }
 
 .gl-asset2 {
-  top: -15%;
-  right: 0%;
-  width: 15vw;
-  max-width: 300px;
+  top: -10vh;   /* was -10% */
+  right: 0vw;
+  width: 30vw;
+  max-width: 420px;
 }
 
 .gl-asset3 {
-  top: 0%;
-  left: 0%;
+  top: 0vh;     /* same but responsive */
+  left: 0vw;
+  width: 18vw;
 }
 
-/* hover isn't useful anymore because pointer-events is none,
-   so you can delete this or leave it, it won't fire */
+/* optional hover (won't activate with pointer-events:none) */
 .gl-asset:hover {
   transform: scale(1.03);
 }

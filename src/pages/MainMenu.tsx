@@ -137,38 +137,6 @@ export default function MainMenu({
             <img src={buttonImg} alt="Play" className="mm-play-icon" />
           </button>
         </div>
-
-        {/* Background assets */}
-        <img
-          src={asset1Img}
-          alt=""
-          className="mm-asset mm-asset1"
-          style={{
-            transform: `translate3d(${mouse.x * ASSET1_STRENGTH}px, ${
-              mouse.y * ASSET1_STRENGTH
-            }px, 0)`,
-          }}
-        />
-        <img
-          src={asset2Img}
-          alt=""
-          className="mm-asset mm-asset2"
-          style={{
-            transform: `translate3d(${mouse.x * ASSET2_STRENGTH}px, ${
-              mouse.y * ASSET2_STRENGTH
-            }px, 0)`,
-          }}
-        />
-        <img
-          src={asset3Img}
-          alt=""
-          className="mm-asset mm-asset3"
-          style={{
-            transform: `translate3d(${mouse.x * ASSET3_STRENGTH}px, ${
-              mouse.y * ASSET3_STRENGTH
-            }px, 0)`,
-          }}
-        />
       </div>
 
       {/* Hint button bottom-left -> directly opens video library */}
