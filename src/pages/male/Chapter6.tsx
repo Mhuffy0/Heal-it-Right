@@ -1,14 +1,12 @@
 // src/pages/Chapter6.tsx
-import React, { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { saveChapterResult } from "../../utils/saveSystem"; 
 import bgImg from "../../assets/UI/BG.png";
-import hintImg from "../../assets/UI/hint.png";
 import backImg from "../../assets/UI/back.png";
 
 import clickSfx from "../../assets/Sound/click.mp3";
-
-import startImg from "../../assets/Chapter6/start.png";
 import woundImg from "../../assets/Chapter5/woundmale.png";
+import startImg from "../../assets/Chapter6/start.png";
 import vdoMain from "../../assets/Chapter6/6.mov";
 
 import "./Chapter6.css";

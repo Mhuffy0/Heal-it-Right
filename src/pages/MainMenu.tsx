@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 
-import bgImg from "../assets/UI/bg.png";
-import logoImg from "../assets/UI/logo.png";
+import bgImg from "../assets/UI/BG.png";
+import logoImg from "../assets/UI/Logo.png";
 import buttonImg from "../assets/UI/button.png";
 import asset1Img from "../assets/UI/asset1.png";
 import asset2Img from "../assets/UI/asset2.png";
