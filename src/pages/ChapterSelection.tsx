@@ -3,17 +3,16 @@ import { useEffect, useMemo, useState } from "react";
 
 import bgImg from "../assets/UI/BG.png";
 import backImg from "../assets/UI/back.png";
-import starImg from "../assets/UI/star.png";
-import blankStarImg from "../assets/UI/blank_star.png";
 
 import {
   getActivePlayer,
-  getChapterStars,
   getPlayers,
   isChapterUnlocked,
   setActivePlayer,
   type PlayerProfile,
 } from "../utils/saveSystem";
+
+
 
 import "./ChapterSelection.css";
 import type { PatientId } from "./PatientSelection";
@@ -56,21 +55,6 @@ export default function ChapterSelection({ patient, onBack, onStartChapter }: Pr
     if (!unlocked) return;
     if (!onStartChapter) return;
     onStartChapter(id, patient);
-  };
-
-  const renderStars = (id: number) => {
-    const stars = getChapterStars(id); // same note: shared between patients for now
-    return (
-      <div className="cs-stars">
-        {[0, 1, 2].map((i) => (
-          <img
-            key={i}
-            src={i < stars ? starImg : blankStarImg}
-            className="cs-star-icon"
-          />
-        ))}
-      </div>
-    );
   };
 
   const patientLabel =
@@ -123,7 +107,7 @@ export default function ChapterSelection({ patient, onBack, onStartChapter }: Pr
         {/* Panel */}
         <div className={`cs-panel ${panelVisible ? "cs-panel--visible" : ""}`}>
           {chapterIds.map((id) => {
-            const unlocked = isChapterUnlocked(id); // same unlock for now
+            const unlocked = isChapterUnlocked(id, patient);
             const isLocked = !unlocked;
 
             return (
@@ -141,12 +125,10 @@ export default function ChapterSelection({ patient, onBack, onStartChapter }: Pr
 
                   <div className="cs-card-footer">
                     {isLocked ? (
-                      <div className="cs-locked-label">LOCKED</div>
-                    ) : (
-                      <div className="cs-unlocked-label">CHAPTER {id}</div>
-                    )}
-
-                    {unlocked && renderStars(id)}
+                        <div className="cs-locked-label">LOCKED</div>
+                      ) : (
+                        <div className="cs-unlocked-label">CHAPTER {id}</div>
+                      )}
                   </div>
                 </div>
               </button>

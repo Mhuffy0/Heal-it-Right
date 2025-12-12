@@ -1,6 +1,8 @@
 // src/pages/Chapter8.tsx
-import React, { useEffect, useRef, useState } from "react";
-import { calcStars, saveChapterResult } from "../../utils/saveSystem";
+import { useEffect, useRef, useState } from "react";
+import { saveChapterResult } from "../../utils/saveSystem";
+import type { PatientId } from "../PatientSelection";
+
 
 import bgImg from "../../assets/UI/BG.png";
 import hintImg from "../../assets/UI/hint.png";
@@ -17,11 +19,13 @@ import Quiz from "../../components/Quiz";
 import "./Chapter8.css";
 
 type Props = {
+  patient: PatientId;
   onBack?: () => void;
   onNext?: () => void;
 };
 
-export default function Chapter8({ onBack, onNext }: Props) {
+
+export default function Chapter8({ patient, onBack, onNext }: Props) {
   const videoRef = useRef<HTMLVideoElement | null>(null);
 
   const [wrongCount, setWrongCount] = useState(0);
@@ -31,7 +35,6 @@ export default function Chapter8({ onBack, onNext }: Props) {
   const [dim, setDim] = useState(false);
   const [transitionBlack, setTransitionBlack] = useState(false);
 
-  const playClick = () => new Audio(clickSfx).play();
   const playCorrect = () => new Audio(correctSfx).play();
   const playWrong = () => new Audio(wrongSfx).play();
 
@@ -60,8 +63,8 @@ export default function Chapter8({ onBack, onNext }: Props) {
   const handleCorrect = () => {
     playCorrect();
 
-    const stars = calcStars(wrongCount);
-    saveChapterResult(8, stars);
+    saveChapterResult(8, wrongCount, patient);
+
 
     setShowQuiz(false);
     setTransitionBlack(true);

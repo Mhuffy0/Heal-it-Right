@@ -68,8 +68,6 @@ export default function GameLayout({ children }: GameLayoutProps) {
           }px, 0)`,
         }}
       />
-
-      {/* page content goes on top */}
       <div className="gl-layer">{children}</div>
     </div>
   );

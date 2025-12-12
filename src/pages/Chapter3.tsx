@@ -1,6 +1,8 @@
 // src/pages/Chapter3.tsx
-import React, { useEffect, useRef, useState } from "react";
-import { calcStars, saveChapterResult } from "../utils/saveSystem";
+import { useEffect, useRef, useState } from "react";
+import { saveChapterResult } from "../utils/saveSystem";
+import type { PatientId } from "./PatientSelection";
+
 
 import bgImg from "../assets/UI/BG.png";
 import hintImg from "../assets/UI/hint.png";
@@ -17,11 +19,13 @@ import Quiz from "../components/Quiz";
 import "./Chapter3.css";
 
 type Props = {
+  patient: PatientId;
   onBack?: () => void;
-  onNext?: () => void; // -> next chapter
+  onNext?: () => void;
 };
 
-export default function Chapter3({ onBack, onNext }: Props) {
+
+export default function Chapter3({ patient, onBack, onNext }: Props) {
   const videoRef = useRef<HTMLVideoElement | null>(null);
 
   const [wrongCount, setWrongCount] = useState(0);
@@ -62,8 +66,7 @@ export default function Chapter3({ onBack, onNext }: Props) {
     playCorrect();
 
     // save score for chapter 3 (you can tweak later)
-    const stars = calcStars(wrongCount);
-    saveChapterResult(3, stars);
+    saveChapterResult(3, wrongCount, patient);
 
     setShowQuiz(false);
     setTransitionBlack(true);

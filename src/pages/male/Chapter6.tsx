@@ -1,6 +1,8 @@
 // src/pages/Chapter6.tsx
 import { useEffect, useRef, useState } from "react";
 import { saveChapterResult } from "../../utils/saveSystem"; 
+import type { PatientId } from "../PatientSelection";
+
 import bgImg from "../../assets/UI/BG.png";
 import backImg from "../../assets/UI/back.png";
 
@@ -12,11 +14,14 @@ import vdoMain from "../../assets/Chapter6/6.mov";
 import "./Chapter6.css";
 
 type Props = {
+  patient: PatientId;
   onBack?: () => void;
   onNext?: () => void;
 };
 
-export default function Chapter6({ onBack, onNext }: Props) {
+
+export default function Chapter6({ patient, onBack, onNext }: Props) {
+
   const videoRef = useRef<HTMLVideoElement | null>(null);
 
   const [showStart, setShowStart] = useState(true);
@@ -56,8 +61,9 @@ export default function Chapter6({ onBack, onNext }: Props) {
       if (!vid.duration || isNaN(vid.duration)) return;
       clearInterval(waitDur);
 
-      // ✅ give full 3 stars for this no-quiz chapter
-      saveChapterResult(6, 3);
+      // ✅ no-quiz chapter => wrongCount = 0 (full score)
+      saveChapterResult(6, 0, patient);
+
 
       setTimeout(() => {
         if (onNext) onNext();
@@ -65,7 +71,7 @@ export default function Chapter6({ onBack, onNext }: Props) {
     }, 200);
 
     return () => clearInterval(waitDur);
-  }, [showStart, onNext]);
+  }, [showStart, onNext, patient]);
 
   return (
     <div className="ch6-root">

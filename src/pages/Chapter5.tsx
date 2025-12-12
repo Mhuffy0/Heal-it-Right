@@ -1,6 +1,8 @@
 // src/pages/Chapter5.tsx
 import React, { useEffect, useRef, useState } from "react";
-import { calcStars, saveChapterResult } from "../utils/saveSystem";
+import { saveChapterResult } from "../utils/saveSystem";
+import type { PatientId } from "./PatientSelection";
+
 
 import bgImg from "../assets/UI/BG.png";
 import hintImg from "../assets/UI/hint.png";
@@ -17,13 +19,15 @@ import Quiz from "../components/Quiz";
 import "./Chapter5.css";
 
 type Props = {
+  patient: PatientId;
   onBack?: () => void;
   onNext?: () => void;
 };
 
+
 type WoundState = "hidden" | "big" | "docked";
 
-export default function Chapter5({ onBack, onNext }: Props) {
+export default function Chapter5({ patient, onBack, onNext }: Props) {
   const [woundState, setWoundState] = useState<WoundState>("hidden");
   const [hasStartedQuizzes, setHasStartedQuizzes] = useState(false);
 
@@ -97,8 +101,8 @@ export default function Chapter5({ onBack, onNext }: Props) {
     playCorrect();
     setShowQuiz2(false);
 
-    const stars = calcStars(wrongCount);
-    saveChapterResult(5, stars);
+    saveChapterResult(5, wrongCount, patient);
+
 
     if (onNext) onNext();
   };

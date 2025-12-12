@@ -10,6 +10,7 @@ import ChapterSelection from "./pages/ChapterSelection";
 import type { PatientId } from "./pages/PatientSelection";
 import PatientSelection from "./pages/PatientSelection";
 import VideoLibrary from "./pages/VideoLibrary";
+import ReviewResults from "./pages/ReviewResults";
 
 // female chapters
 import Chapter1 from "./pages/Chapter1";
@@ -53,7 +54,9 @@ type Screen =
   | "maleChapter5"
   | "maleChapter6"
   | "maleChapter7"
-  | "maleChapter8";
+  | "maleChapter8"
+  | "reviewResults";
+
 
 
 export default function App() {
@@ -61,9 +64,13 @@ export default function App() {
   const [activePatient, setActivePatient] = useState<PatientId>("female");
 
   const goToChapterSelect = () => setScreen("chapterSelect");
+  const goToReview = () => setScreen("reviewResults");
 
   // ChapterSelection now calls onStartChapter(id, patient)
   const handleStartChapter = (id: number, patient: PatientId) => {
+    setActivePatient(patient);
+
+    
     if (patient === "female") {
       if (id === 1) setScreen("chapter1");
       else if (id === 2) setScreen("chapter2");
@@ -85,6 +92,14 @@ export default function App() {
     }
   };
 
+  
+  const handleReplayChapter = (id: number, patient: PatientId) => {
+    // keep patient consistent
+    setActivePatient(patient);
+    handleStartChapter(id, patient);
+  };
+
+
   let content: React.ReactNode;
 
   // patient selection screen
@@ -99,6 +114,16 @@ export default function App() {
       />
     );
   }
+
+  else if (screen === "reviewResults") {
+    content = (
+      <ReviewResults
+        patient={activePatient}
+        onReviewQuiz={() => setScreen("patientSelect")}
+      />
+    );
+  }
+
   // chapter selection for current patient
   else if (screen === "chapterSelect") {
     content = (
@@ -126,6 +151,7 @@ export default function App() {
   else if (screen === "chapter1") {
     content = (
       <Chapter1
+        patient={activePatient}
         onBack={() => setScreen("patientSelect")}
         onNext={() => setScreen("chapter2")}
       />
@@ -133,6 +159,7 @@ export default function App() {
   } else if (screen === "chapter2") {
     content = (
       <Chapter2
+        patient={activePatient}
         onBack={() => setScreen("patientSelect")}
         onNext={() => setScreen("chapter3")}
       />
@@ -140,6 +167,7 @@ export default function App() {
   } else if (screen === "chapter3") {
     content = (
       <Chapter3
+        patient={activePatient}
         onBack={() => setScreen("patientSelect")}
         onNext={() => setScreen("chapter4")}
       />
@@ -147,6 +175,7 @@ export default function App() {
   } else if (screen === "chapter4") {
     content = (
       <Chapter4
+        patient={activePatient}
         onBack={() => setScreen("patientSelect")}
         onNext={() => setScreen("chapter5")}
       />
@@ -154,6 +183,7 @@ export default function App() {
   } else if (screen === "chapter5") {
     content = (
       <Chapter5
+        patient={activePatient}
         onBack={() => setScreen("patientSelect")}
         onNext={() => setScreen("chapter6")}
       />
@@ -161,6 +191,7 @@ export default function App() {
   } else if (screen === "chapter6") {
     content = (
       <Chapter6
+        patient={activePatient}
         onBack={() => setScreen("patientSelect")}
         onNext={() => setScreen("chapter7")}
       />
@@ -168,6 +199,7 @@ export default function App() {
   } else if (screen === "chapter7") {
     content = (
       <Chapter7
+        patient={activePatient}
         onBack={() => setScreen("patientSelect")}
         onNext={() => setScreen("chapter8")}
       />
@@ -175,15 +207,18 @@ export default function App() {
   } else if (screen === "chapter8") {
     content = (
       <Chapter8
+        patient={activePatient}
         onBack={() => setScreen("patientSelect")}
-        onNext={goToChapterSelect} // final → back to selection
+        onNext={goToReview} // final → review page
       />
     );
   }
+
   // MALE chapters
   else if (screen === "maleChapter1") {
     content = (
       <MaleChapter1
+        patient={activePatient}
         onBack={() => setScreen("patientSelect")}
         onNext={() => setScreen("maleChapter2")}
       />
@@ -191,6 +226,7 @@ export default function App() {
   } else if (screen === "maleChapter2") {
     content = (
       <MaleChapter2
+        patient={activePatient}
         onBack={() => setScreen("patientSelect")}
         onNext={() => setScreen("maleChapter3")}
       />
@@ -198,6 +234,7 @@ export default function App() {
   } else if (screen === "maleChapter3") {
     content = (
       <MaleChapter3
+        patient={activePatient}
         onBack={() => setScreen("patientSelect")}
         onNext={() => setScreen("maleChapter4")}
       />
@@ -205,6 +242,7 @@ export default function App() {
   } else if (screen === "maleChapter4") {
     content = (
       <MaleChapter4
+        patient={activePatient}
         onBack={() => setScreen("patientSelect")}
         onNext={() => setScreen("maleChapter5")}
       />
@@ -212,6 +250,7 @@ export default function App() {
   } else if (screen === "maleChapter5") {
     content = (
       <MaleChapter5
+        patient={activePatient}
         onBack={() => setScreen("patientSelect")}
         onNext={() => setScreen("maleChapter6")}
       />
@@ -219,6 +258,7 @@ export default function App() {
   } else if (screen === "maleChapter6") {
     content = (
       <MaleChapter6
+        patient={activePatient}
         onBack={() => setScreen("patientSelect")}
         onNext={() => setScreen("maleChapter7")}
       />
@@ -226,6 +266,7 @@ export default function App() {
   } else if (screen === "maleChapter7") {
     content = (
       <MaleChapter7
+        patient={activePatient}
         onBack={() => setScreen("patientSelect")}
         onNext={() => setScreen("maleChapter8")}
       />
@@ -233,11 +274,13 @@ export default function App() {
   } else if (screen === "maleChapter8") {
     content = (
       <MaleChapter8
+        patient={activePatient}
         onBack={() => setScreen("patientSelect")}
-        onNext={goToChapterSelect} // final → back to selection
+        onNext={goToReview} // final → review page
       />
     );
   }
+
   // default: main menu
   else {
     content = (

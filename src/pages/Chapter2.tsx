@@ -1,6 +1,8 @@
 // src/pages/Chapter2.tsx
-import React, { useEffect, useRef, useState } from "react";
-import { calcStars, saveChapterResult } from "../utils/saveSystem";
+import { useEffect, useRef, useState } from "react";
+import { saveChapterResult } from "../utils/saveSystem";
+import type { PatientId } from "./PatientSelection";
+
 
 import bgImg from "../assets/UI/BG.png";
 import hintImg from "../assets/UI/hint.png";
@@ -17,11 +19,13 @@ import Quiz from "../components/Quiz";
 import "./Chapter2.css";
 
 type Props = {
+  patient: PatientId;
   onBack?: () => void;
   onNext?: () => void; // -> Chapter3
 };
 
-export default function Chapter2({ onBack, onNext }: Props) {
+
+export default function Chapter2({ patient, onBack, onNext }: Props) {
   const videoRef = useRef<HTMLVideoElement | null>(null);
   const [wrongCount, setWrongCount] = useState(0);
   const [currentVideo, setCurrentVideo] = useState(1);
@@ -59,8 +63,7 @@ export default function Chapter2({ onBack, onNext }: Props) {
   const handleCorrect = () => {
     playCorrect();
 
-    const stars = calcStars(wrongCount);
-    saveChapterResult(1, stars);
+    saveChapterResult(2, wrongCount, patient);
 
     setShowQuiz(false);
     setTransitionBlack(true);
@@ -150,8 +153,9 @@ export default function Chapter2({ onBack, onNext }: Props) {
           </button>
 
           <div className="ch2-intro-content">
-            <h2>ผู้ป่วยหญิงไทย อายุ 72 ปี</h2>
+            <h2>ข้อมูลเบื้องต้น</h2>
             <p>
+              ผู้ป่วยหญิงไทย อายุ 72 ปี
               นอนโรงพยาบาลจากข้อเข่าเสื่อมรุนแรง เคลื่อนไหวลำบาก
               ต้องพึ่งพาผู้อื่นในการช่วยพลิกตัว หลีกเลี่ยงการขยับตัวเพราะปวดข้อ
               ร่วมกับความดันโลหิตสูงควบคุมไม่ดี ผลประเมิน Braden score เท่ากับ 15
