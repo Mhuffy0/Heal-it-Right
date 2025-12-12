@@ -13,7 +13,7 @@ import correctSfx from "../../assets/Sound/correct.mp3";
 import wrongSfx from "../../assets/Sound/wrong.mp3";
 
 import startImg from "../../assets/Chapter7/start.png";
-import vdo7 from "../../assets/Chapter7/play.mov";
+import vdo7 from "../../assets/Chapter7/7.mov";
 
 import Quiz from "../../components/Quiz";
 import "./Chapter7.css";
