@@ -27,6 +27,12 @@ type MouseState = {
   y: number; // -0.5 .. 0.5
 };
 
+const handleLogout = () => {
+  localStorage.clear();
+  window.location.reload();
+};
+
+
 export default function MainMenu({
   onPlay,
   onShowVideoLibrary,
@@ -108,6 +114,15 @@ export default function MainMenu({
       <div className={`mm-dim ${dimActive ? "mm-dim--active" : ""}`} />
 
       <div className="mm-layer">
+         {/* LOG OUT (top-left) */}
+        <button
+          type="button"
+          className="mm-logout-btn"
+          onClick={handleLogout}
+        >
+          LOG OUT
+        </button>
+        
         {/* Logo */}
         <img
           src={logoImg}

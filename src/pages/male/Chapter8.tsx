@@ -1,5 +1,5 @@
 // src/pages/Chapter8.tsx
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import { saveChapterResult } from "../../utils/saveSystem";
 import type { PatientId } from "../PatientSelection";
 
@@ -13,7 +13,6 @@ import correctSfx from "../../assets/Sound/correct.mp3";
 import wrongSfx from "../../assets/Sound/wrong.mp3";
 
 import startImg from "../../assets/Chapter8/start.png";
-import vdo8 from "../../assets/Chapter8/8male.mov";
 
 import Quiz from "../../components/Quiz";
 import "./Chapter8.css";
@@ -26,7 +25,6 @@ type Props = {
 
 
 export default function Chapter8({ patient, onBack, onNext }: Props) {
-  const videoRef = useRef<HTMLVideoElement | null>(null);
 
   const [wrongCount, setWrongCount] = useState(0);
   const [showStart, setShowStart] = useState(true);
@@ -60,48 +58,29 @@ export default function Chapter8({ patient, onBack, onNext }: Props) {
   }, []);
 
   // When quiz is correct → fade → hide picture → play video
-  const handleCorrect = () => {
+   const handleCorrect = () => {
     playCorrect();
 
     saveChapterResult(8, wrongCount, patient);
 
-
     setShowQuiz(false);
     setTransitionBlack(true);
 
-    // hide start frame, reveal video
-    setShowStart(false);
+    // keep start image (do NOT setShowStart(false))
 
-    setTimeout(() => {
-      if (videoRef.current) {
-        const vid = videoRef.current;
-        vid.muted = true;
-        vid.playsInline = true;
-        vid.src = vdo8;
-        vid.load();
-        vid.play();
-
-        const waitDur = setInterval(() => {
-          if (!vid.duration || isNaN(vid.duration)) return;
-          clearInterval(waitDur);
-
-          setTimeout(() => {
-            if (onNext) onNext();
-          }, vid.duration * 1000);
-        }, 200);
-      }
-    }, 400);
-
+    // finish stage after a short fade
     setTimeout(() => {
       setTransitionBlack(false);
       setDim(false);
-    }, 900);
+      if (onNext) onNext();
+    }, 700);
   };
 
-  const handleWrong = () => {
+    const handleWrong = () => {
     playWrong();
-    setWrongCount((prev) => prev + 1);
+    setWrongCount((prev) => Math.min(4, prev + 1));
   };
+
 
   return (
     <div className="ch8-root">
@@ -115,18 +94,6 @@ export default function Chapter8({ patient, onBack, onNext }: Props) {
         {showStart && (
           <div className="ch8-video-frame">
             <img src={startImg} className="ch8-start-img" />
-          </div>
-        )}
-
-        {/* Video */}
-        {!showStart && (
-          <div className="ch8-video-frame">
-            <video
-              ref={videoRef}
-              className="ch8-video"
-              muted
-              playsInline
-            />
           </div>
         )}
 

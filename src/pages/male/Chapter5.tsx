@@ -103,7 +103,6 @@ export default function Chapter5({ patient, onBack, onNext }: Props) {
 
     saveChapterResult(5, wrongCount, patient);
 
-
     if (onNext) onNext();
   };
 

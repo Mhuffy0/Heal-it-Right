@@ -171,3 +171,28 @@
   opacity: 0.4;
   cursor: default;
 }
+
+/* LOG OUT button top-left */
+.mm-logout-btn {
+  position: absolute;
+  top: 18px;
+  left: 18px;
+  z-index: 60;
+
+  padding: 10px 14px;
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  border-radius: 10px;
+
+  background: rgba(0, 0, 0, 0.55);
+  color: #fff;
+
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+
+  backdrop-filter: blur(6px);
+}
+
+.mm-logout-btn:hover {
+  background: rgba(0, 0, 0, 0.75);
+}
