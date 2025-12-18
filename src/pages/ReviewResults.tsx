@@ -15,7 +15,7 @@ function patientLabel(patient: PatientId) {
   return patient === "female" ? "ผู้ป่วยหญิงอายุ 72 ปี" : "ผู้ป่วยชายอายุ 88 ปี";
 }
 
-// small detail card (short + safe)
+// small detail card
 function patientDetails(patient: PatientId) {
   if (patient === "female") {
     return "หญิงไทย อายุ 72 ปี เคลื่อนไหวลำบาก มีรอยแดงก้นกบ 3×3 ซม. (Braden 15)";

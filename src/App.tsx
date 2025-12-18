@@ -36,7 +36,7 @@ type Screen =
   | "menu"
   | "patientSelect"
   | "chapterSelect"
-  | "videoLibrary" // <- lowercase, matches checks below
+  | "videoLibrary" // <- lowercase
   // female
   | "chapter1"
   | "chapter2"
