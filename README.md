@@ -24,11 +24,11 @@
 - `src/components/GameLayout.tsx`  
   Layout wrapper (พื้นหลัง/กรอบ UI ร่วม)
 - `src/components/ChapterPlayer.tsx` หรือ Player ของ Chapter  
-  ควบคุมวิดีโอ, pause ตามเวลา, เปิดหน้าคำถาม, timer, resume video
+  ควบคุมวิดีโอ, pause, เปิดหน้าคำถาม, timer, resume video
 - `src/components/Quiz.tsx`  
   แสดงคำถาม/ตัวเลือก, handle เลือกตอบ, ส่งผลถูก/ผิด/หมดเวลา
 - `src/components/ResultScreen.tsx`  
-  หน้าสรุปผลต่อคำถาม/ต่อ chapter (แล้วแต่ดีไซน์ที่ใช้จริง)
+  หน้าสรุปผลต่อคำถาม/ต่อ chapter
 
 ---
 
